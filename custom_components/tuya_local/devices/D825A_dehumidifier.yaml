@@ -185,7 +185,7 @@ secondary_entities:
     dps:
       - id: 107
         type: bitmap
-	name: AH_LO 
+        name: AH_LO  
         options:
           - "LO"
         mapping:
