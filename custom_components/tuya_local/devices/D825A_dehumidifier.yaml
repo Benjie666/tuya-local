@@ -1,0 +1,205 @@
+name: Dehumidifier
+products:
+  - id: bf01cb1dfe474db6b0p5ex
+    name: D825A
+primary_entity:
+  entity: humidifier
+  class: dehumidifier
+  dps:
+    - id: 1
+      type: boolean
+      name: switch
+    - id: 3
+      type: select
+      name: dehumidify_set_enum
+      options:
+        - "35"
+        - "40"
+        - "45"
+        - "50"
+        - "55"
+        - "60"
+        - "65"
+        - "70"
+        - "75"
+        - "80"
+    - id: 4
+      type: select
+      name: fan_speed_enum
+      options:
+        - "low"
+        - "mid"
+        - "high"
+        - "auto"
+    - id: 5
+      type: select
+      name: mode
+      options:
+        - "dry_clothes"
+        - "sleep_mode"
+        - "manual_dehumidify"
+        - "auto"
+      mapping:
+        - dps_val: dry_clothes
+          value: laundry
+        - dps_val: sleep_mode
+          value: sleep
+        - dps_val: manual_dehumidify
+          value: normal
+        - dps_val: auto
+          value: auto
+    - id: 6
+      type: sensor
+      name: humidity_indoor
+      unit_of_measurement: "%"
+      value_template: "{{ value_json.humidity_indoor }}"
+      device_class: humidity
+    - id: 7
+      type: sensor
+      name: temp_indoor
+      unit_of_measurement: "℃"
+      value_template: "{{ value_json.temp_indoor }}"
+      device_class: temperature
+secondary_entities:
+  - id: 8
+    type: boolean
+    name: swing
+  - id: 16
+    type: boolean
+    name: child_lock
+  - id: 17
+    type: select
+    name: countdown_set
+    options:
+      - "cancel"
+      - "1h"
+      - "2h"
+      - "3h"
+      - "4h"
+      - "5h"
+      - "6h"
+      - "7h"
+      - "8h"
+      - "9h"
+  - entity: sensor
+    name: countdown_remaining
+    class: duration
+    category: diagnostic
+    dps:
+      - id: 18
+        type: integer
+        name: countdown_left
+        unit_of_measurement: "min"
+        min: 0
+        max: 540
+        step: 1
+  - entity: binary_sensor
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 19
+        type: bitmap
+        name: fault
+        options:
+          - "C1"
+          - "C2"
+          - "P1"
+          - "P3"
+          - "P4"
+          - "water_full"
+        mapping:
+          - dps_val: C1
+            value: defrost NTC error
+          - dps_val: C2
+            value: temperature/humidity sensor error
+          - dps_val: P1
+            value: defrost
+          - dps_val: P3
+            value: primary filter reminder
+          - dps_val: P4
+            value: secondary filter reminder
+          - dps_val: water_full
+            value: empty water tank
+  - id: 102
+    type: select
+    name: airpurify_mode
+    options:
+      - "manual"
+      - "night"
+  - id: 103
+    type: string
+    name: airpurify_fanspeed
+    options:
+      - "low"
+      - "mid"
+      - "high"
+  - entity: select
+    name: Light_adjust
+    category: config
+    dps:
+      - id: 104
+        type: select
+        name: Light_adjust
+        options:
+          - "2"
+          - "3"
+        mapping:
+          - dps_val: 2
+            value: Turn off humidity indicator + dim panel
+          - dps_val: 3
+            value: Restore full brightness
+  - entity: select
+    name: Airpurify_switch
+    dps:
+      - id: 105
+        type: select
+        name: Airpurify_switch
+        options:
+          - "dehum_air"
+          - "airpurify"
+          - "dehum30_air"
+        mapping:
+          - dps_val: dehum_air
+            value: Dehumidify only
+          - dps_val: airpurify
+            value: Airpurify only
+          - dps_val: dehum30_air
+            value: Dehumidify and Airpurify
+  - entity: binary_sensor
+    name: high_alert
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 106
+        type: bitmap
+        name: AH_HI 
+        options:
+          - "HI"
+        mapping:
+          - dps_val: HI
+            value: High Alert Triggered
+  - entity: binary_sensor
+    name: low_alert
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 107
+        type: bitmap
+	name: AH_LO 
+        options:
+          - "LO"
+        mapping:
+          - dps_val: LO
+            value: Low Alert Triggered
+  - entity: switch
+    name: inner_dry_appointment
+    dps:
+      - id: 108
+        type: boolean
+        name: inner_dry_appointment
+  - entity: switch
+    name: beeper_switch
+    dps:
+      - id: 109
+        type: boolean
+        name: beeper_switch
